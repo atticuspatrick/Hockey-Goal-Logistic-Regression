@@ -1,0 +1,48 @@
+---
+title: "Hockey Model"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#library necessary package
+library(tidyverse)
+
+#read in data
+shots<-read.csv("shots_2019.csv")
+
+#take a look at data
+head(shots)
+
+```
+
+Below, we will be selecting 7 columns from the data set for our logistic regression model. We will be predicting the likelihood of a goal based on:
+1.) shooterTimeOnIce - the amount a time since the start of the shooter's shift up until the shot is taken
+2.) arenaAdjustedShotDistance - distance from the net the shot is taken
+3.) defendingTeamAverageTimeOnIce - the average current shift length of all players on the defending team when the shot is taken
+4.) speedFromLastEvent - The distance between the shot location and the previous event's location divded by the number of seconds between them
+5.) shotRush - Set to 1 if the shot was on a rush. (If the last event was in another zone and within 4 seconds) 0 if not
+6.) shotRebound - Set to 1 if the shot is a rebound. (If the last event was a shot and within 3 seconds of this shot) 0 if not
+
+```{r filter}
+
+#filter data
+shots1 <- shots %>% select(goal, shooterTimeOnIce, arenaAdjustedShotDistance, defendingTeamAverageTimeOnIce, speedFromLastEvent, shotRush, shotRebound)
+
+#take a look again at filtered data
+head(shots1)
+
+```
+
+
+```{r logistic regression}
+#set binary data as factor data
+shots1$shotRush <- as.factor(shots1$shotRush)
+shots1$shotRebound <- as.factor(shots1$shotRebound)
+
+#create model
+mylogit <- glm(goal ~ shooterTimeOnIce + arenaAdjustedShotDistance + defendingTeamAverageTimeOnIce + speedFromLastEvent + shotRush + shotRebound, data = shots1, family = "binomial")
+
+#model results -- any key take aways here?
+summary(mylogit)
+```
