@@ -46,14 +46,3 @@ mylogit <- glm(goal ~ shooterTimeOnIce + arenaAdjustedShotDistance + defendingTe
 #model results -- any key take aways here?
 summary(mylogit)
 ```
-*.Rdata binary
-*.RData binary
-*.rda   binary
-*.rdb   binary
-*.rds   binary
-*.Rd    text
-*.Rdx   binary
-*.Rmd	  text
-*.R  	  text
-*.Rproj text
-*.[Rr]md   linguist-detectable
